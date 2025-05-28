@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DYLAN MATHENGE PORTFOLIO</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: radial-gradient(ellipse at center, #0d0d1a 0%, #000000 100%);
+      color: #00ccff;
+      overflow-x: hidden;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: rgba(0, 0, 0, 0.7);
+      position: fixed;
+      width: 100%;
+      z-index: 10;
+      backdrop-filter: blur(5px);
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+    }
+
+    nav a {
+      color: #00ccff;
+      text-decoration: none;
+      margin: 0 1rem;
+      font-weight: bold;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    nav a:hover {
+      color: #bb86fc;
+      background: rgba(0, 204, 255, 0.1);
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: #bb86fc;
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    .menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: #00ccff;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 2rem;
+    }
+
+    h1 {
+      font-size: 3rem;
+      color: #00ccff;
+      margin-bottom: 1rem;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      color: #bb86fc;
+      max-width: 600px;
+    }
+
+    /* Mobile Navigation */
+    .mobile-nav {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 70%;
+      height: 100vh;
+      background: rgba(13, 13, 26, 0.95);
+      backdrop-filter: blur(10px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: right 0.3s ease;
+      z-index: 100;
+    }
+
+    .mobile-nav.active {
+      right: 0;
+    }
+
+    .mobile-nav a {
+      color: #00ccff;
+      text-decoration: none;
+      font-size: 1.5rem;
+      margin: 1rem 0;
+      padding: 0.5rem 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .mobile-nav a:hover {
+      color: #bb86fc;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 2rem;
+      right: 2rem;
+      background: none;
+      border: none;
+      color: #00ccff;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    /* Sections */
+    section {
+      min-height: 100vh;
+      padding: 6rem 2rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+      color: #00ccff;
+      text-align: center;
+    }
+
+    /* About Me Section */
+    .about-content {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .about-text {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .about-image {
+      flex: 1;
+      min-width: 300px;
+      text-align: center;
+    }
+
+    .interests {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .interest-card {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid #00ccff;
+      border-radius: 8px;
+      padding: 1rem;
+      flex: 1;
+      min-width: 200px;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    .interest-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0, 204, 255, 0.2);
+    }
+
+    .interest-card i {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: #bb86fc;
+    }
+
+    /* Projects Section */
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .project-card {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid #00ccff;
+      border-radius: 8px;
+      padding: 1.5rem;
+      transition: transform 0.3s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 20px rgba(0, 204, 255, 0.2);
+    }
+
+    .project-title {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      color: #bb86fc;
+    }
+
+    .project-description {
+      margin-bottom: 1rem;
+    }
+
+    .project-link {
+      display: inline-flex;
+      align-items: center;
+      color: #00ccff;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .project-link:hover {
+      color: #bb86fc;
+    }
+
+    .project-link i {
+      margin-right: 0.5rem;
+    }
+
+    /* Skills Section */
+    .skills-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: center;
+    }
+
+    .skill-category {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid #00ccff;
+      border-radius: 8px;
+      padding: 1.5rem;
+      flex: 1;
+      min-width: 250px;
+    }
+
+    .skill-category h3 {
+      color: #bb86fc;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid #00ccff;
+      padding-bottom: 0.5rem;
+    }
+
+    .skill-item {
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .skill-icon {
+      margin-right: 0.5rem;
+      color: #00ccff;
+    }
+
+    /* Contact Section */
+    .contact-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    .contact-info {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .contact-form {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #bb86fc;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 0.8rem;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid #00ccff;
+      border-radius: 4px;
+      color: white;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    button[type="submit"] {
+      background: #00ccff;
+      color: #0d0d1a;
+      border: none;
+      padding: 1rem 2rem;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: bold;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button[type="submit"]:hover {
+      background: #bb86fc;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 204, 255, 0.3);
+    }
+
+    .form-message {
+      margin-top: 1rem;
+      padding: 1rem;
+      border-radius: 4px;
+      display: none;
+    }
+
+    .success {
+      background: rgba(0, 255, 0, 0.1);
+      border: 1px solid #00ff00;
+      color: #00ff00;
+    }
+
+    .error {
+      background: rgba(255, 0, 0, 0.1);
+      border: 1px solid #ff0000;
+      color: #ff0000;
+    }
+
+    /* Cat Animation */
+    .cat {
+      position: fixed;
+      bottom: -100px;
+      left: 0;
+      width: 100px;
+      height: 100px;
+      background-image: url('https://cdn-icons-png.flaticon.com/512/616/616408.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      z-index: 5;
+      transition: all 0.5s ease;
+      pointer-events: none;
+    }
+
+    /* Dance Floor */
+    .dance-floor {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 50px;
+      background: repeating-linear-gradient(
+        45deg,
+        #00ccff,
+        #00ccff 10px,
+        #bb86fc 10px,
+        #bb86fc 20px
+      );
+      z-index: 4;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    @media (max-width: 768px) {
+      .menu-btn {
+        display: block;
+      }
+
+      nav {
+        display: none;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      h2 {
+        font-size: 1.2rem;
+      }
+
+      .about-content {
+        flex-direction: column;
+      }
+    }
+     .loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at center, #0d0d1a 0%, #000000 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease;
+    }
+    
+    .loader-content {
+      width: fit-content;
+      font-size: 17px;
+      font-family: monospace;
+      line-height: 1.4;
+      font-weight: bold;
+      padding: 30px 2px 50px;
+      background: linear-gradient(#000 0 0) 0 0/100% 100% content-box padding-box no-repeat; 
+      position: relative;
+      overflow: hidden;
+      animation: l10-0 2s infinite cubic-bezier(1,175,.5,175);
+      color: #00ccff;
+    }
+    
+    .loader-content::before {
+      content:"Loading";
+      display:inline-block;
+      animation: l10-2 2s infinite;
+    }
+    
+    .loader-content::after {
+      content:"";
+      position: absolute;
+      width: 34px;
+      height: 28px;
+      top: 110%;
+      left: calc(50% - 16px);
+      background:
+        linear-gradient(90deg,#0000 12px,#f92033 0 22px,#0000 0 26px,#fdc98d 0 32px,#0000) bottom 26px left 50%,
+        linear-gradient(90deg,#0000 10px,#f92033 0 28px,#fdc98d 0 32px,#0000 0) bottom 24px  left 50%,
+        linear-gradient(90deg,#0000 10px,#643700 0 16px,#fdc98d 0 20px,#000 0 22px,#fdc98d 0 24px,#000 0 26px,#f92033 0 32px,#0000 0) bottom 22px left 50%,
+        linear-gradient(90deg,#0000 8px,#643700 0 10px,#fdc98d 0 12px,#643700 0 14px,#fdc98d 0 20px,#000 0 22px,#fdc98d 0 28px,#f92033 0 32px,#0000 0) bottom 20px left 50%,
+        linear-gradient(90deg,#0000 8px,#643700 0 10px,#fdc98d 0 12px,#643700 0 16px,#fdc98d 0 22px,#000 0 24px,#fdc98d 0 30px,#f92033 0 32px,#0000 0) bottom 18px left 50%,
+        linear-gradient(90deg,#0000 8px,#643700 0 12px,#fdc98d 0 20px,#000 0 28px,#f92033 0 30px,#0000 0) bottom 16px left 50%,
+        linear-gradient(90deg,#0000 12px,#fdc98d 0 26px,#f92033 0 30px,#0000 0) bottom 14px left 50%,
+        linear-gradient(90deg,#fdc98d 6px,#f92033 0 14px,#222a87 0 16px,#f92033 0 22px,#222a87 0 24px,#f92033 0 28px,#0000 0 32px,#643700 0) bottom 12px left 50%,
+        linear-gradient(90deg,#fdc98d 6px,#f92033 0 16px,#222a87 0 18px,#f92033 0 24px,#f92033 0 26px,#0000 0 30px,#643700 0) bottom 10px left 50%,
+        linear-gradient(90deg,#0000 10px,#f92033 0 16px,#222a87 0 24px,#feee49 0 26px,#222a87 0 30px, #643700 0) bottom 8px left 50%,
+        linear-gradient(90deg,#0000 12px,#222a87 0 18px,#feee49 0 20px,#222a87 0 30px,#643700 0) bottom 6px left 50%,
+        linear-gradient(90deg,#0000 8px,#643700 0 12px,#222a87 0 30px,#643700 0) bottom 4px left 50%,
+        linear-gradient(90deg,#0000 6px,#643700 0 14px,#222a87 0 26px,#0000 0) bottom 2px left 50%,
+        linear-gradient(90deg,#0000 6px,#643700 0 10px,#0000 0 ) bottom 0px left 50%;
+      background-size: 34px 2px;
+      background-repeat: no-repeat;
+      animation: inherit;
+      animation-name: l10-1;
+    }
+    
+    @keyframes l10-0{
+      0%,30%   { background-position: 0 0px }
+      50%,100% { background-position: 0 -0.1px }
+    }
+    
+    @keyframes l10-1{
+      50%,100% { top:109.5% };
+    }
+    
+    @keyframes l10-2{
+      0%,30%   { transform:translateY(0); }
+      80%,100% { transform:translateY(-260%); }
+    }
+    
+    /* Add this to hide the loader when page is loaded */
+    .loader.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="loader" id="loader">
+    <div class="loader-content"></div>
+  </div>
+
+  <canvas id="starCanvas"></canvas>
+  <div class="cat" id="cat"></div>
+  <div class="dance-floor" id="danceFloor"></div>
+  <canvas id="starCanvas"></canvas>
+  <div class="cat" id="cat"></div>
+  <div class="dance-floor" id="danceFloor"></div>
+
+  <header>
+    <div class="logo">DYLAN MATHENGE</div>
+    <nav>
+      <a href="#about">About Me</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="menu-btn" id="menuBtn">☰</button>
+  </header>
+
+  <div class="mobile-nav" id="mobileNav">
+    <button class="close-btn" id="closeBtn">✕</button>
+    <a href="#about" onclick="closeMobileNav()">About Me</a>
+    <a href="#projects" onclick="closeMobileNav()">Projects</a>
+    <a href="#skills" onclick="closeMobileNav()">Skills</a>
+    <a href="#contact" onclick="closeMobileNav()">Contact</a>
+  </div>
+
+  <div class="hero">
+    <h1 id="typed-text"></h1>
+    <h2>I secure systems, decode logic, and build the future.</h2>
+  </div>
+
+  <section id="about">
+    <h2 class="section-title">About Me</h2>
+    <div class="about-content">
+      <div class="about-text">
+        <p>Hello! I'm Dylan Mathenge, a passionate cybersecurity expert and full-stack developer with a love for turning complex problems into elegant solutions.</p>
+        <p>When I'm not coding, you can find me exploring mountain trails with my two adventurous cats, Leo and Luna, or dancing samba at local festivals. I believe the rhythm of coding and dancing share the same creative flow!</p>
+        <p>My journey in tech began when I was 12 years old, hacking my school's grading system (don't worry - I fixed the vulnerabilities afterward!). Since then, I've dedicated myself to ethical hacking and building secure systems.</p>
+        
+        <div class="interests">
+          <div class="interest-card" onclick="showCat()">
+            <i class="fas fa-cat"></i>
+            <h3>Cat Lover</h3>
+            <p>Proud parent of two adventurous felines who "help" me code</p>
+          </div>
+          <div class="interest-card" onclick="startDance()">
+            <i class="fas fa-music"></i>
+            <h3>Samba Dancer</h3>
+            <p>Brazilian rhythms fuel my creativity and energy</p>
+          </div>
+          <div class="interest-card">
+            <i class="fas fa-mountain"></i>
+            <h3>Adventure Seeker</h3>
+            <p>From mountain peaks to code challenges, I love pushing limits</p>
+          </div>
+          <div class="interest-card">
+            <i class="fas fa-code"></i>
+            <h3>Code Poet</h3>
+            <p>Writing elegant solutions is my art form</p>
+          </div>
+        </div>
+      </div>
+      <div class="about-image">
+        <img src="my face.jpeg" alt="Dylan Mathenge" style="width:100%; max-width:400px; border-radius:8px; border:2px solid #00ccff;">
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <h2 class="section-title">My Projects</h2>
+    <div class="project-grid">
+      <div class="project-card">
+        <h3 class="project-title">WiFi Jammer</h3>
+        <p class="project-description">A cybersecurity tool for testing network vulnerabilities and demonstrating WiFi security principles (for educational purposes only).</p>
+        <a href="https://github.com/dy-glitch/WIFI-JAMMER" class="project-link" target="_blank">
+          <i class="fab fa-github"></i> View on GitHub
+        </a>
+      </div>
+      <div class="project-card">
+        <h3 class="project-title">Phone Finder</h3>
+        <p class="project-description">An innovative solution for locating misplaced devices using advanced signal processing techniques.</p>
+        <a href="https://github.com/dy-glitch/PhoneFinder" class="project-link" target="_blank">
+          <i class="fab fa-github"></i> View on GitHub
+        </a>
+      </div>
+      <div class="project-card">
+        <h3 class="project-title">Samba Rhythm Analyzer</h3>
+        <p class="project-description">Combining my passions - an AI tool that analyzes and generates samba rhythms using machine learning.</p>
+        <a href="#" class="project-link" target="_blank">
+          <i class="fab fa-github"></i> Coming Soon
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <h2 class="section-title">Skills</h2>
+    <div class="skills-container">
+      <div class="skill-category">
+        <h3><i class="fas fa-shield-alt"></i> Cybersecurity</h3>
+        <div class="skill-item"><span class="skill-icon">🔒</span> Ethical Hacking</div>
+        <div class="skill-item"><span class="skill-icon">🛡️</span> Network Security</div>
+        <div class="skill-item"><span class="skill-icon">🔑</span> Cryptography</div>
+        <div class="skill-item"><span class="skill-icon">🕵️</span> Penetration Testing</div>
+      </div>
+      <div class="skill-category">
+        <h3><i class="fas fa-code"></i> Development</h3>
+        <div class="skill-item"><span class="skill-icon">🐍</span> Python</div>
+        <div class="skill-item"><span class="skill-icon">☕</span> Java</div>
+        <div class="skill-item"><span class="skill-icon">💎</span> C</div>
+        <div class="skill-item"><span class="skill-icon">🦀</span> Bash</div>
+      </div>
+      <div class="skill-category">
+        <h3><i class="fas fa-cat"></i> Other Passions</h3>
+        <div class="skill-item"><span class="skill-icon">🐾</span> Cat Whispering</div>
+        <div class="skill-item"><span class="skill-icon">💃</span> Samba Dancing</div>
+        <div class="skill-item"><span class="skill-icon">🧗</span> Rock Climbing</div>
+        <div class="skill-item"><span class="skill-icon">🍳</span> Gourmet Cooking</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2 class="section-title">Contact</h2>
+    <div class="contact-container">
+      <div class="contact-info">
+        <h3>Let's Connect!</h3>
+        <p>Whether you want to discuss a project, talk cybersecurity, share cat videos, or debate the best samba rhythms, I'd love to hear from you.</p>
+        <div style="margin-top: 2rem;">
+          <p><i class="fas fa-envelope" style="margin-right: 10px;"></i> dylanmathenge54@gmail.com</p>
+          <p><i class="fas fa-phone" style="margin-right: 10px;"></i> +254 746 851 226</p>
+          <p><i class="fab fa-github" style="margin-right: 10px;"></i> github.com/dy-glitch</p>
+        </div>
+      </div>
+      <div class="contact-form">
+      <form action="https://formspree.io/f/xqaqrddk" method="POST" id="contactForm">
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input type="text" id="name" name="name" required>
+  </div>
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" required>
+  </div>
+  <div class="form-group">
+    <label for="subject">Subject</label>
+    <input type="text" id="subject" name="subject" required>
+  </div>
+  <div class="form-group">
+    <label for="message">Message</label>
+    <textarea id="message" name="message" required></textarea>
+  </div>
+  <!-- Optional: Add a redirect after submission -->
+  <input type="hidden" name="_next" value="https://yourportfolio.com/thanks.html">
+  <!-- Optional: Set email subject -->
+  <input type="hidden" name="_subject" value="New message from your portfolio!">
+  <button type="submit">Send Message <i class="fas fa-paper-plane"></i></button>
+  <div id="formMessage" class="form-message"></div>
+  <div id="formMessage" class="form-message">
+  If the form fails, email me directly at <a href="mailto:dylanmathenge54@gmail.com">dylanmathenge54@gmail.com</a>.
+</div>
+</form>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        document.getElementById('loader').classList.add('hidden');
+      }, 3000); // Adjust time as needed
+    });
+    // Typing animation
+    const text = "DYLAN MATHENGE";
+    let i = 0;
+    function typeWriter() {
+      if (i < text.length) {
+        document.getElementById("typed-text").innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typeWriter, 250);
+      }
+    }
+    typeWriter();
+
+    // Shooting stars + constellation lines
+    const canvas = document.getElementById("starCanvas");
+    const ctx = canvas.getContext("2d");
+    let stars = [];
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+
+    function Star() {
+      this.reset = function () {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2;
+        this.speed = Math.random() * 2 + 0.5;
+      }
+      this.reset();
+    }
+
+    for (let i = 0; i < 150; i++) {
+      stars.push(new Star());
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw stars
+      for (let star of stars) {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+        ctx.fillStyle = '#00ccff';
+        ctx.fill();
+
+        // Shooting effect
+        star.x -= star.speed;
+        star.y += star.speed * 0.2;
+
+        if (star.x < 0 || star.y > canvas.height) {
+          star.reset();
+        }
+      }
+
+      // Draw constellation lines
+      ctx.strokeStyle = '#00ccff33';
+      for (let i = 0; i < stars.length; i++) {
+        for (let j = i + 1; j < stars.length; j++) {
+          const dx = stars[i].x - stars[j].x;
+          const dy = stars[i].y - stars[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 100) {
+            ctx.beginPath();
+            ctx.moveTo(stars[i].x, stars[i].y);
+            ctx.lineTo(stars[j].x, stars[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    draw();
+
+    // Mobile navigation functionality
+    const menuBtn = document.getElementById('menuBtn');
+    const closeBtn = document.getElementById('closeBtn');
+    const mobileNav = document.getElementById('mobileNav');
+
+    function openMobileNav() {
+      mobileNav.classList.add('active');
+    }
+
+    function closeMobileNav() {
+      mobileNav.classList.remove('active');
+    }
+
+    menuBtn.addEventListener('click', openMobileNav);
+    closeBtn.addEventListener('click', closeMobileNav);
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+
+    // Cat animation
+    function showCat() {
+      const cat = document.getElementById('cat');
+      cat.style.bottom = '0';
+      setTimeout(() => {
+        cat.style.bottom = '-100px';
+      }, 3000);
+    }
+
+    // Dance floor animation
+    function startDance() {
+      const danceFloor = document.getElementById('danceFloor');
+      danceFloor.style.opacity = '1';
+      
+      // Make cat dance too
+      const cat = document.getElementById('cat');
+      cat.style.bottom = '50px';
+      cat.style.transition = 'all 0.5s ease';
+      
+      // Random movement
+      let danceInterval = setInterval(() => {
+        cat.style.left = Math.random() * (window.innerWidth - 100) + 'px';
+      }, 500);
+      
+      setTimeout(() => {
+        danceFloor.style.opacity = '0';
+        cat.style.bottom = '-100px';
+        clearInterval(danceInterval);
+      }, 5000);
+    }
+
+    // Contact form handling
+    const contactForm = document.getElementById('contactForm');
+    const formMessage = document.getElementById('formMessage');
+
+    contactForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Simulate form submission
+      formMessage.textContent = "Message sent successfully! I'll get back to you soon.";
+      formMessage.className = "form-message success";
+      formMessage.style.display = "block";
+      
+      // Reset form
+      contactForm.reset();
+      
+      // Hide message after 5 seconds
+      setTimeout(() => {
+        formMessage.style.display = "none";
+      }, 5000);
+    });
+
+    // Easter egg - type 'samba' to start dancing
+    let typedString = '';
+    document.addEventListener('keydown', function(e) {
+      typedString += e.key.toLowerCase();
+      if (typedString.includes('samba')) {
+        startDance();
+        typedString = '';
+      }
+      if (typedString.length > 10) {
+        typedString = '';
+      }
+    });
+    contactForm.addEventListener('submit', async function(e) {
+  e.preventDefault();
+  formMessage.style.display = "block";
+  formMessage.textContent = "Sending...";
+  
+  try {
+    const response = await fetch(e.target.action, {
+      method: 'POST',
+      body: new FormData(e.target),
+      headers: { 'Accept': 'application/json' }
+    });
+    
+    if (!response.ok) throw new Error('Server error');
+    
+    formMessage.textContent = "Message sent successfully! 🎉";
+    formMessage.className = "form-message success";
+    contactForm.reset();
+  } catch (error) {
+    formMessage.textContent = "Failed to send. Email me directly at dylanmathenge54@gmail.com";
+    formMessage.className = "form-message error";
+  }
+});
+  </script>
+</body>
+</html>
